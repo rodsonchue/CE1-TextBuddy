@@ -21,7 +21,7 @@ import java.io.PrintWriter;
 public class TextBuddy {
 
     // List of commands accepted by the program's main driver
-    private enum Command {
+    public enum Command {
         ADD, CLEAR, DEFAULT, DELETE, DISPLAY, EXIT
     };
 
@@ -52,6 +52,38 @@ public class TextBuddy {
             errorFileDoesNotExist();
         } else {
             driverIOLoop(fileLocation);
+        }
+    }
+
+    /**
+     * @param userString
+     *            The full String that the user inputs into the command line.
+     *            Includes the command as well.
+     * @return Command enum corresponding to the user input.
+     */
+    public static Command parseCommand(String userString) {
+        String[] userWords = userString.split(" ");
+        String userCommand = userWords[0].toUpperCase();
+
+        switch (userCommand) {
+            case "ADD" :
+                return Command.ADD;
+
+            case "CLEAR" :
+                return Command.CLEAR;
+
+            case "DELETE" :
+                return Command.DELETE;
+
+            case "DISPLAY" :
+                return Command.DISPLAY;
+
+            case "EXIT" :
+                return Command.EXIT;
+
+            default :
+                return Command.DEFAULT;
+
         }
     }
 
@@ -170,7 +202,7 @@ public class TextBuddy {
      */
     private static void displayUnknownCommandMessage() {
         System.out
-                .println("Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DEFAULT | DELETE | DISPLAY | EXIT\n");
+        .println("Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DEFAULT | DELETE | DISPLAY | EXIT\n");
 
     }
 
@@ -186,7 +218,7 @@ public class TextBuddy {
 
     /**
      * This is the main driver loop of the program.
-     * 
+     *
      * @param fileLocation
      *            Location of the file as per specified by the user.
      */
@@ -254,7 +286,7 @@ public class TextBuddy {
      */
     private static void errorDeleteNotNumber() {
         System.out
-                .println("Error: Integers only!\nUsage: delete <line to delete>\n");
+        .println("Error: Integers only!\nUsage: delete <line to delete>\n");
 
     }
 
@@ -273,7 +305,7 @@ public class TextBuddy {
      */
     private static void errorFileIOException() {
         System.out
-                .print("Error: Unexpected IOException!\n Please restart application.");
+        .print("Error: Unexpected IOException!\n Please restart application.");
 
     }
 
@@ -300,7 +332,7 @@ public class TextBuddy {
      */
     private static void errorUnexpectedException() {
         System.out
-                .println("Error: UnexpectedException!\n Please restart application.");
+        .println("Error: UnexpectedException!\n Please restart application.");
 
     }
 
@@ -497,38 +529,6 @@ public class TextBuddy {
             errorFileIOException();
         }
         return false;
-    }
-
-    /**
-     * @param userString
-     *            The full String that the user inputs into the command line.
-     *            Includes the command as well.
-     * @return Command enum corresponding to the user input.
-     */
-    private static Command parseCommand(String userString) {
-        String[] userWords = userString.split(" ");
-        String userCommand = userWords[0].toUpperCase();
-
-        switch (userCommand) {
-            case "ADD" :
-                return Command.ADD;
-
-            case "CLEAR" :
-                return Command.CLEAR;
-
-            case "DELETE" :
-                return Command.DELETE;
-
-            case "DISPLAY" :
-                return Command.DISPLAY;
-
-            case "EXIT" :
-                return Command.EXIT;
-
-            default :
-                return Command.DEFAULT;
-
-        }
     }
 
     /**
