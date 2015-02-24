@@ -1,0 +1,43 @@
+all content deleted from test.txt
+test.txt is empty
+added to test.txt: "donkeys and potatoes"
+1. donkeys and potatoes
+added to test.txt: "peanutbutterjelly"
+1. donkeys and potatoes
+2. peanutbutterjelly
+added to test.txt: "lots of sashimi"
+1. donkeys and potatoes
+2. peanutbutterjelly
+3. lots of sashimi
+deleted from test.txt: "lots of sashimi"
+all content deleted from test.txt
+test.txt is empty
+added to test.txt: "donkeys and potatoes"
+1. donkeys and potatoes
+added to test.txt: "peanutbutterjelly"
+1. donkeys and potatoes
+2. peanutbutterjelly
+added to test.txt: "lots of sashimi"
+1. donkeys and potatoes
+2. peanutbutterjelly
+3. lots of sashimi
+deleted from test.txt: "donkeys and potatoes"
+1. peanutbutterjelly
+2. lots of sashimi
+deleted from test.txt: "peanutbutterjelly"
+1. lots of sashimi
+deleted from test.txt: "lots of sashimi"
+test.txt is empty
+all content deleted from test.txt
+test.txt is empty
+test.txt does not contain line 1
+test.txt does not contain line 2
+test.txt does not contain line 333
+test.txt is empty
+all content deleted from test.txt
+test.txt is empty
+Unknown Command!
+
+Available Commands:
+ADD | CLEAR | DEFAULT | DELETE | DISPLAY | EXIT
+

@@ -1,0 +1,32 @@
+clear
+display
+add donkeys and potatoes
+display
+add peanutbutterjelly
+display
+add lots of sashimi
+display
+delete 3
+clear
+display
+add donkeys and potatoes
+display
+add peanutbutterjelly
+display
+add lots of sashimi
+display
+delete 1
+display
+delete 1
+display
+delete 1
+display
+clear
+display
+delete 1
+delete 2
+delete 333
+display
+clear
+display
+
