@@ -3,7 +3,7 @@
  * following commands: add <string> | delete <string> | clear | display | exit
  */
 
-package ce1.textbuddy;
+package ce2.textbuddy;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,7 +23,29 @@ public class TextBuddy {
     // List of commands accepted by the program's main driver
     public enum Command {
         ADD, CLEAR, DEFAULT, DELETE, DISPLAY, EXIT
-    };
+    }
+
+    private static final int ADD_COMMAND_LENGTH = 3;
+    private static final int ADD_COMMAND_WITH_SPACE = 4;
+    private static final String CLEAR_MESSAGE = "all content deleted from ";
+    private static final int DELETE_COMMAND_LENGTH = 6;
+    private static final int DELETE_COMMAND_LENGTH_WITH_SPACE = 7;
+    private static final String DELETED_FROM = "deleted from ";
+    private static final String DOES_NOT_CONTAIN_LINE = " does not contain line ";
+    private static final String ERROR_FILE_DOES_NOT_EXIST = "Error: File does not exist!";
+    private static final String EXIT_MESSAGE = "Thank you for using TextBuddy!";
+    private static final String FILE_IO_EXCEPTION = "Error: Unexpected IOException!\n Please restart application.";
+    private static final String INTEGERS_ONLY = "Error: Integers only!\nUsage: delete <line to delete>\n";
+    private static final String IS_EMPTY = " is empty";
+    private static final String NO_FILE_FOUND = "Error: No file specified!";
+    private static final String NO_TEXT_MESSAGE = "No text specified.\nUsage: ADD <text_to_add>";
+    private static final String READY_TO_USE = " is ready to use.";
+    private static final String SPACE = " ";
+    private static final String UNEXPECTED_EXCEPTION = "Error: UnexpectedException!\n Please restart application.";
+    private static final String UNKNOWN_COMMAND_MESSAGE = "Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DEFAULT | DELETE | DISPLAY | EXIT\n";
+    private static final String WELCOME_INTRODUCTION = "Welcome to TextBuddy. ";
+
+    private static final int ZERO = 0;;
 
     // Tests whether a string is an Integer
     public static boolean isInteger(String str) {
@@ -62,7 +84,7 @@ public class TextBuddy {
      * @return Command enum corresponding to the user input.
      */
     public static Command parseCommand(String userString) {
-        String[] userWords = userString.split(" ");
+        String[] userWords = userString.split(SPACE);
         String userCommand = userWords[0].toUpperCase();
 
         switch (userCommand) {
@@ -92,7 +114,7 @@ public class TextBuddy {
      *            The file that the clear command is instructed to clear
      */
     private static void displayClearMessage(File fl) {
-        System.out.println("all content deleted from " + fl.getName());
+        System.out.println(CLEAR_MESSAGE + fl.getName());
 
     }
 
@@ -101,7 +123,7 @@ public class TextBuddy {
      *            The file that is empty
      */
     private static void displayEmptyFile(File fl) {
-        System.out.println(fl.getName() + " is empty");
+        System.out.println(fl.getName() + IS_EMPTY);
     }
 
     /**
@@ -109,7 +131,7 @@ public class TextBuddy {
      * that the program is terminating
      */
     private static void displayExitMessageNormal() {
-        System.out.println("Thank you for using TextBuddy!");
+        System.out.println(EXIT_MESSAGE);
         System.exit(0);
 
     }
@@ -170,8 +192,7 @@ public class TextBuddy {
      *            The file that contains the line to be deleted
      */
     private static void displayLineDeleted(String line, File fl) {
-        System.out.println("deleted from " + fl.getName() + ": \"" + line
-                + "\"");
+        System.out.println(DELETED_FROM + fl.getName() + ": \"" + line + "\"");
 
     }
 
@@ -182,8 +203,7 @@ public class TextBuddy {
      *            File for which the line does not exist
      */
     private static void displayLineNotFound(int lineNumber, File fl) {
-        System.out.println(fl.getName() + " does not contain line "
-                + lineNumber);
+        System.out.println(fl.getName() + DOES_NOT_CONTAIN_LINE + lineNumber);
 
     }
 
@@ -192,7 +212,7 @@ public class TextBuddy {
      * to add to the text file.
      */
     private static void displayNoTextMessage() {
-        System.out.println("No text specified.\nUsage: ADD <text_to_add>");
+        System.out.println(NO_TEXT_MESSAGE);
 
     }
 
@@ -201,8 +221,7 @@ public class TextBuddy {
      * the list of available commands.
      */
     private static void displayUnknownCommandMessage() {
-        System.out
-        .println("Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DEFAULT | DELETE | DISPLAY | EXIT\n");
+        System.out.println(UNKNOWN_COMMAND_MESSAGE);
 
     }
 
@@ -211,8 +230,7 @@ public class TextBuddy {
      *            File specified in the parameters when running the program
      */
     private static void displayWelcomeMessage(File fl) {
-        System.out.println("Welcome to TextBuddy. " + fl.getName()
-                + " is ready to use.");
+        System.out.println(WELCOME_INTRODUCTION + fl.getName() + READY_TO_USE);
 
     }
 
@@ -285,8 +303,7 @@ public class TextBuddy {
      * integer
      */
     private static void errorDeleteNotNumber() {
-        System.out
-        .println("Error: Integers only!\nUsage: delete <line to delete>\n");
+        System.out.println(INTEGERS_ONLY);
 
     }
 
@@ -295,7 +312,7 @@ public class TextBuddy {
      * not exist
      */
     private static void errorFileDoesNotExist() {
-        System.out.println("Error: File does not exist!");
+        System.out.println(ERROR_FILE_DOES_NOT_EXIST);
 
     }
 
@@ -304,8 +321,7 @@ public class TextBuddy {
      * invoke this.
      */
     private static void errorFileIOException() {
-        System.out
-        .print("Error: Unexpected IOException!\n Please restart application.");
+        System.out.print(FILE_IO_EXCEPTION);
 
     }
 
@@ -314,7 +330,7 @@ public class TextBuddy {
      * directory or bad pathname
      */
     private static void errorNoFileSpecified() {
-        System.out.println("Error: No file specified!");
+        System.out.println(NO_FILE_FOUND);
     }
 
     /**
@@ -331,8 +347,7 @@ public class TextBuddy {
      * this.
      */
     private static void errorUnexpectedException() {
-        System.out
-        .println("Error: UnexpectedException!\n Please restart application.");
+        System.out.println(UNEXPECTED_EXCEPTION);
 
     }
 
@@ -344,7 +359,7 @@ public class TextBuddy {
      *            File to append the parameter's text to
      */
     private static void executeAdd(String userInput, File fl) {
-        if (userInput.length() > 4) {
+        if (userInput.length() > ADD_COMMAND_WITH_SPACE) {
             // Remove the first 4 characters
             // literally removing "ADD " from String
             // then appending a newline behind
@@ -369,7 +384,8 @@ public class TextBuddy {
                     }
                 }
             }
-        } else if ((userInput.length() == 3) || (userInput.length() == 4)) {
+        } else if ((userInput.length() == ADD_COMMAND_LENGTH)
+                || (userInput.length() == ADD_COMMAND_WITH_SPACE)) {
             // When the userInput is exactly "ADD" or "ADD "
             displayNoTextMessage();
             // We do not do anything
@@ -422,7 +438,7 @@ public class TextBuddy {
      */
     private static void executeDelete(String userInput, File fl) {
         // "D E L E T E _"
-        if (userInput.length() > 7) {
+        if (userInput.length() > DELETE_COMMAND_LENGTH_WITH_SPACE) {
             String numberString = getNumberString(userInput);
             if (isInteger(numberString)) {
                 int lineNumber = getLineNumber(numberString);
@@ -431,7 +447,8 @@ public class TextBuddy {
                 errorDeleteNotNumber();
             }
 
-        } else if ((userInput.length() == 6) || (userInput.length() == 7)) {
+        } else if ((userInput.length() == DELETE_COMMAND_LENGTH)
+                || (userInput.length() == DELETE_COMMAND_LENGTH_WITH_SPACE)) {
             errorNoNumberGivenToDelete();
         } else {
             errorUnexpectedException();
@@ -486,7 +503,8 @@ public class TextBuddy {
      * @return The first "word" preceeding the command
      */
     private static String getNumberString(String userInput) {
-        return userInput.substring(7).trim().split(" ")[0];
+        return userInput.substring(DELETE_COMMAND_LENGTH_WITH_SPACE).trim()
+                .split(SPACE)[0];
     }
 
     /**
@@ -537,7 +555,7 @@ public class TextBuddy {
      * @return Location of the file to edit
      */
     private static String readParams(String[] args) {
-        if (args.length <= 0) {
+        if (args.length <= ZERO) {
             return null;
         } else {
             return args[0];

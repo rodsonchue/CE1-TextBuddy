@@ -1,4 +1,4 @@
-package ce1.textbuddy;
+package ce2.textbuddy;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import ce1.textbuddy.TextBuddy.Command;
+import ce2.textbuddy.TextBuddy.Command;
 
 /**
  * Tests parsing of the basic variant of Commands
