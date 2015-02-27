@@ -11,11 +11,16 @@ public class TextBuddyMessage {
     public static final String ERROR_FILE_DOES_NOT_EXIST = "Error: File does not exist!";
     public static final String EXIT_MESSAGE = "Thank you for using TextBuddy!";
     public static final String FILE_IO_EXCEPTION = "Error: Unexpected IOException!\n Please restart application.";
+    public static final int FIRST_LINE = 1;
     public static final String INTEGERS_ONLY = "Error: Integers only!\nUsage: delete <line to delete>\n";
     public static final String IS_EMPTY = " is empty";
     public static final String NO_FILE_FOUND = "Error: No file specified!";
     public static final String NO_TEXT_MESSAGE = "No text specified.\nUsage: ADD <text_to_add>";
     public static final String READY_TO_USE = " is ready to use.";
+    public static final String SEARCH_MISSING_QUERY = "Error: No search term specified!\nUsage: search <query>";
+    public static final String SEARCH_NO_RESULT = "No hits found for query: \"%s\"!";
+    public static final String SEARCH_RESULT_HEADER = "Search Results for \"%s\": \n";
+    public static final int SEARCH_WORD_LENGTH = 7; // "S E A R C H _"
     public static final String SPACE = " ";
     public static final String UNEXPECTED_EXCEPTION = "Error: UnexpectedException!\n Please restart application.";
     public static final String UNKNOWN_COMMAND_MESSAGE = "Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DELETE | DISPLAY | EXIT\n";

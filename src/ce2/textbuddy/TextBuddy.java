@@ -15,6 +15,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import ce2.textbuddy.pojo.TextBuddySearchStruct;
 
 /**
  * @author Rodson Chue Le Sheng [A0110787A]
@@ -44,10 +49,11 @@ public class TextBuddy {
         /*
          * Show what the file currently contains
          */
-        EXIT
+        EXIT,
         /*
          * Exit the program
          */
+        SEARCH
     }
 
     // Magical Numbers
@@ -108,6 +114,9 @@ public class TextBuddy {
 
             case "EXIT" :
                 return Command.EXIT;
+
+            case "SEARCH" :
+                return Command.SEARCH;
 
             default :
                 return Command.DEFAULT;
@@ -245,12 +254,43 @@ public class TextBuddy {
 
     }
 
+    private static void displayNoQuery() {
+        System.out.println(TextBuddyMessage.SEARCH_MISSING_QUERY);
+    }
+
+    private static void displayNoResultsFound(String match) {
+        System.out.printf(TextBuddyMessage.SEARCH_NO_RESULT, match);
+
+    }
+
     /**
      * Invoked when user invokes the 'add' command but does not include any text
      * to add to the text file.
      */
     private static void displayNoTextMessage() {
         System.out.println(TextBuddyMessage.NO_TEXT_MESSAGE);
+
+    }
+
+    private static void displayResultList(
+            LinkedList<TextBuddySearchStruct> resultList) {
+        StringBuilder sb = new StringBuilder();
+        TextBuddySearchStruct entry;
+
+        while (!resultList.isEmpty()) {
+            entry = resultList.removeFirst();
+            sb.append(entry.lineNumber + ". ");
+            sb.append(entry.line);
+            sb.append(System.lineSeparator());
+        }
+        String everythingFormatted = sb.toString();
+
+        System.out.println(everythingFormatted);
+
+    }
+
+    private static void displayResultsFoundHeader(String match) {
+        System.out.printf(TextBuddyMessage.SEARCH_RESULT_HEADER, match);
 
     }
 
@@ -318,9 +358,12 @@ public class TextBuddy {
                         isNotExitCommand = false;
                         break;
 
+                    case SEARCH :
+                        executeSearch(fl, userInput);
+                        break;
+
                     default :
-                        errorUnexpectedException();
-                        isNotExitCommand = false;
+                        displayUnknownCommandMessage();
                         break;
                 }
             } while (isNotExitCommand);
@@ -499,6 +542,32 @@ public class TextBuddy {
     }
 
     /**
+     * Executes the command to search the file using a String to match lines
+     * with.
+     *
+     * @param fl
+     *            file to search
+     * @param userInput
+     *            userInput including the command
+     */
+    private static void executeSearch(File fl, String userInput) {
+        if (userInput.length() < TextBuddyMessage.SEARCH_WORD_LENGTH) {
+            displayNoQuery();
+        } else {
+            String match = userInput
+                    .substring(TextBuddyMessage.SEARCH_WORD_LENGTH);
+
+            LinkedList<TextBuddySearchStruct> resultList = searchFile(fl, match);
+            if (resultList.isEmpty()) {
+                displayNoResultsFound(match);
+            } else {
+                displayResultsFoundHeader(match);
+                displayResultList(resultList);
+            }
+        }
+    }
+
+    /**
      * @param fileLocation
      *            Location of the file
      * @return A file object
@@ -635,5 +704,44 @@ public class TextBuddy {
             closeWriter(pw);
         }
 
+    }
+
+    /**
+     * Searches a given file with a String to match each line with. Returns a
+     * LinkedList of lines that contain that String as a substring
+     *
+     * @param fl
+     *            file to search
+     * @param match
+     *            String to match line with
+     * @return LinkedList<TextBuddySearchStruct> list of lines containing match
+     *         with their line number
+     */
+    private static LinkedList<TextBuddySearchStruct> searchFile(File fl,
+            String match) {
+        LinkedList<TextBuddySearchStruct> lineList = new LinkedList<TextBuddySearchStruct>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(fl));
+            String line;
+
+            // Begin with the first line
+            int lineNumber = TextBuddyMessage.FIRST_LINE;
+            while ((line = br.readLine()) != null) {
+                Pattern p = Pattern.compile(match);
+                Matcher m = p.matcher(line);
+                if (m.find()) {
+                    lineList.addLast(new TextBuddySearchStruct(line, lineNumber));
+                }
+                lineNumber++; // Move onto the next line
+            }
+
+        } catch (Exception e) {
+            errorFileIOException();
+        } finally {
+            closeReader(br);
+        }
+
+        return lineList;
     }
 }
