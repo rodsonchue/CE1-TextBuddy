@@ -11,9 +11,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * @author Rodson Chue Le Sheng [A0110787A]
@@ -115,6 +116,43 @@ public class TextBuddy {
     }
 
     /**
+     * Function closes a Reader, usually because its operation has completed
+     *
+     * @param br
+     */
+    private static void closeReader(Reader br) {
+        if (br != null) {
+            try {
+                br.close();
+            } catch (Exception e) {
+                errorFileIOException();
+            }
+        } else {
+            // Nothing needed to be done about null object
+        }
+
+    }
+
+    /**
+     * Function closes a Writer, usually because its operation has completed.
+     *
+     * @param bw
+     *            BufferedWriter to close
+     */
+    private static void closeWriter(Writer bw) {
+        if (bw != null) {
+            try {
+                bw.close();
+            } catch (Exception e) {
+                errorFileIOException();
+            }
+        } else {
+            // Nothing needed to be done about null object
+        }
+
+    }
+
+    /**
      * @param fl
      *            The file that the clear command is instructed to clear
      */
@@ -166,14 +204,7 @@ public class TextBuddy {
         } catch (Exception e) {
             errorFileIOException();
         } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-
-            } catch (Exception e) {
-                errorFileIOException();
-            }
+            closeReader(br);
         }
     }
 
@@ -296,13 +327,7 @@ public class TextBuddy {
         } catch (Exception e) {
             errorFileIOException();
         } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-            } catch (IOException e) {
-                errorFileIOException();
-            }
+            closeReader(br);
         }
     }
 
@@ -384,13 +409,7 @@ public class TextBuddy {
             } catch (Exception e) {
                 errorFileIOException();
             } finally {
-                if (bw != null) {
-                    try {
-                        bw.close();
-                    } catch (Exception e) {
-                        errorFileIOException();
-                    }
-                }
+                closeWriter(bw);
             }
         } else if ((userInput.length() == TextBuddyMessage.ADD_COMMAND_LENGTH)
                 || (userInput.length() == TextBuddyMessage.ADD_COMMAND_WITH_SPACE)) {
@@ -417,13 +436,7 @@ public class TextBuddy {
         } catch (Exception e) {
             errorFileIOException();
         } finally {
-            if (pw != null) {
-                try {
-                    pw.close();
-                } catch (Exception e) {
-                    errorFileIOException();
-                }
-            }
+            closeWriter(pw);
         }
 
     }
@@ -559,6 +572,9 @@ public class TextBuddy {
     }
 
     /**
+     * Reads the program arguements. Only accept the first parameter even if
+     * there exist more than one.
+     *
      * @param args
      *            Program arguements
      * @return Location of the file to edit
@@ -615,16 +631,8 @@ public class TextBuddy {
         } catch (Exception e) {
             errorFileIOException();
         } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-                if (pw != null) {
-                    pw.close();
-                }
-            } catch (Exception e) {
-                errorFileIOException();
-            }
+            closeReader(br);
+            closeWriter(pw);
         }
 
     }
