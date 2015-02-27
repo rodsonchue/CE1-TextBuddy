@@ -59,6 +59,67 @@ public class TextBuddy {
     // Magical Numbers
     private static final int ZERO = 0;
 
+    /**
+     * This is the main driver loop of the program.
+     *
+     * @param fileLocation
+     *            Location of the file as per specified by the user.
+     */
+    public static void driverIOLoop(String fileLocation) {
+        File fl = null;
+        BufferedReader br = null;
+        try {
+            fl = getFile(fileLocation);
+            br = new BufferedReader(new InputStreamReader(System.in));
+
+            displayWelcomeMessage(fl);
+
+            boolean isNotExitCommand = true;
+            do {
+                String userInput = br.readLine();
+                Command userCommand = parseCommand(userInput);
+                switch (userCommand) {
+                    case ADD :
+                        executeAdd(userInput, fl);
+                        break;
+
+                    case CLEAR :
+                        executeClear(fl);
+                        break;
+
+                    case DEFAULT :
+                        executeDefault();
+                        break;
+
+                    case DELETE :
+                        executeDelete(userInput, fl);
+                        break;
+
+                    case DISPLAY :
+                        executeDisplay(fl);
+                        break;
+
+                    case EXIT :
+                        executeExit();
+                        isNotExitCommand = false;
+                        break;
+
+                    case SEARCH :
+                        executeSearch(fl, userInput);
+                        break;
+
+                    default :
+                        displayUnknownCommandMessage();
+                        break;
+                }
+            } while (isNotExitCommand);
+        } catch (Exception e) {
+            errorFileIOException();
+        } finally {
+            closeReader(br);
+        }
+    }
+
     // Tests whether a string is an Integer
     public static boolean isInteger(String str) {
         try {
@@ -311,67 +372,6 @@ public class TextBuddy {
         System.out.println(TextBuddyMessage.WELCOME_INTRODUCTION + fl.getName()
                 + TextBuddyMessage.READY_TO_USE);
 
-    }
-
-    /**
-     * This is the main driver loop of the program.
-     *
-     * @param fileLocation
-     *            Location of the file as per specified by the user.
-     */
-    private static void driverIOLoop(String fileLocation) {
-        File fl = null;
-        BufferedReader br = null;
-        try {
-            fl = getFile(fileLocation);
-            br = new BufferedReader(new InputStreamReader(System.in));
-
-            displayWelcomeMessage(fl);
-
-            boolean isNotExitCommand = true;
-            do {
-                String userInput = br.readLine();
-                Command userCommand = parseCommand(userInput);
-                switch (userCommand) {
-                    case ADD :
-                        executeAdd(userInput, fl);
-                        break;
-
-                    case CLEAR :
-                        executeClear(fl);
-                        break;
-
-                    case DEFAULT :
-                        executeDefault();
-                        break;
-
-                    case DELETE :
-                        executeDelete(userInput, fl);
-                        break;
-
-                    case DISPLAY :
-                        executeDisplay(fl);
-                        break;
-
-                    case EXIT :
-                        executeExit();
-                        isNotExitCommand = false;
-                        break;
-
-                    case SEARCH :
-                        executeSearch(fl, userInput);
-                        break;
-
-                    default :
-                        displayUnknownCommandMessage();
-                        break;
-                }
-            } while (isNotExitCommand);
-        } catch (Exception e) {
-            errorFileIOException();
-        } finally {
-            closeReader(br);
-        }
     }
 
     /**
