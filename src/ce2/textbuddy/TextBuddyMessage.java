@@ -18,11 +18,12 @@ public class TextBuddyMessage {
     public static final String NO_TEXT_MESSAGE = "No text specified.\nUsage: ADD <text_to_add>";
     public static final String READY_TO_USE = " is ready to use.";
     public static final String SEARCH_MISSING_QUERY = "Error: No search term specified!\nUsage: search <query>";
-    public static final String SEARCH_NO_RESULT = "No hits found for query: \"%s\"!";
+    public static final String SEARCH_NO_RESULT = "No hits found for query: \"%s\"!\n";
     public static final String SEARCH_RESULT_HEADER = "Search Results for \"%s\": \n";
     public static final int SEARCH_WORD_LENGTH = 7; // "S E A R C H _"
+    public static final String SORT_SUCCESS = "File sorted alphabetically!\n";
     public static final String SPACE = " ";
     public static final String UNEXPECTED_EXCEPTION = "Error: UnexpectedException!\n Please restart application.";
-    public static final String UNKNOWN_COMMAND_MESSAGE = "Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DELETE | DISPLAY | EXIT\n";
+    public static final String UNKNOWN_COMMAND_MESSAGE = "Unknown Command!\n\nAvailable Commands:\nADD | CLEAR | DELETE | DISPLAY | SEARCH | SORT | EXIT\n";
     public static final String WELCOME_INTRODUCTION = "Welcome to TextBuddy. ";
 }

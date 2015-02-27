@@ -11,10 +11,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +56,14 @@ public class TextBuddy {
         /*
          * Exit the program
          */
-        SEARCH
+        SEARCH,
+        /*
+         * Searches the file with a phrase
+         */
+        SORT
+        /*
+         * Sorts the lines in the file alphabetically
+         */
     }
 
     // Magical Numbers
@@ -106,6 +116,10 @@ public class TextBuddy {
 
                     case SEARCH :
                         executeSearch(fl, userInput);
+                        break;
+
+                    case SORT :
+                        executeSort(fl);
                         break;
 
                     default :
@@ -178,6 +192,9 @@ public class TextBuddy {
 
             case "SEARCH" :
                 return Command.SEARCH;
+
+            case "SORT" :
+                return Command.SORT;
 
             default :
                 return Command.DEFAULT;
@@ -340,7 +357,7 @@ public class TextBuddy {
 
         while (!resultList.isEmpty()) {
             entry = resultList.removeFirst();
-            sb.append(entry.lineNumber + ". ");
+            sb.append("Line " + entry.lineNumber + ": ");
             sb.append(entry.line);
             sb.append(System.lineSeparator());
         }
@@ -353,6 +370,10 @@ public class TextBuddy {
     private static void displayResultsFoundHeader(String match) {
         System.out.printf(TextBuddyMessage.SEARCH_RESULT_HEADER, match);
 
+    }
+
+    private static void displaySortSuccess() {
+        System.out.println(TextBuddyMessage.SORT_SUCCESS);
     }
 
     /**
@@ -568,12 +589,56 @@ public class TextBuddy {
     }
 
     /**
+     * Function is called when sort command is issued.
+     *
+     * @param fl
+     *            file to execute sort on
+     */
+    private static void executeSort(File fl) {
+        ArrayList<String> listOfStrings = getFileLines(fl);
+        Collections.sort(listOfStrings); // Use the default collections sort
+        overwriteFileWith(fl, listOfStrings);
+        displaySortSuccess();
+    }
+
+    /**
      * @param fileLocation
      *            Location of the file
      * @return A file object
      */
     private static File getFile(String fileLocation) {
         return new File(fileLocation);
+    }
+
+    /**
+     * Extracts line by line, an ArrayList of Strings contained in the given
+     * file.
+     *
+     * @param fl
+     *            file to get strings from
+     * @return ArrayList<String> a list of strings contained in the file
+     */
+    private static ArrayList<String> getFileLines(File fl) {
+
+        ArrayList<String> listOfStrings = new ArrayList<String>();
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(fl));
+            String line;
+
+            // Begin with the first line
+            while ((line = br.readLine()) != null) {
+                listOfStrings.add(line);
+            }
+
+            br.close();
+        } catch (Exception e) {
+            errorFileIOException();
+        } finally {
+            closeReader(br);
+        }
+
+        return listOfStrings;
     }
 
     /**
@@ -638,6 +703,44 @@ public class TextBuddy {
             errorFileIOException();
         }
         return false;
+    }
+
+    private static void overwriteFileWith(File fl,
+            ArrayList<String> listOfStrings) {
+        File tmpFile = new File("intermediate.tmp");
+        if (tmpFile.exists()) {
+            tmpFile.delete();
+        }
+
+        try {
+            tmpFile.createNewFile();
+        } catch (IOException e1) {
+            errorFileIOException();
+        }
+
+        PrintWriter pr = null;
+
+        try {
+            pr = new PrintWriter(new FileWriter(tmpFile));
+
+            // Begin with the first line
+            while (!listOfStrings.isEmpty()) {
+                pr.append(listOfStrings.remove(0) + "\n");
+            }
+            pr.close();
+
+            // Try to rename file
+            if (fl.exists()) {
+                fl.delete();
+            }
+            tmpFile.renameTo(fl);
+
+        } catch (Exception e) {
+            errorFileIOException();
+        } finally {
+            closeWriter(pr);
+        }
+
     }
 
     /**
