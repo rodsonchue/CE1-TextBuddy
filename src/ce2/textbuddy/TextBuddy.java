@@ -1,8 +1,3 @@
-/*
- * A Simple CLI Program that does text file manipulation. It supports the
- * following commands: add <string> | delete <string> | clear | display | exit
- */
-
 package ce2.textbuddy;
 
 import java.io.BufferedReader;
@@ -25,6 +20,19 @@ import java.util.regex.Pattern;
 import ce2.textbuddy.pojo.TextBuddySearchStruct;
 
 /**
+ * * A Simple CLI Program that does text file manipulation. It supports the
+ * following commands syntax: (excluding pre tags)
+ *
+ * <pre>
+ * add <String>
+ * delete <String>
+ * clear
+ * display
+ * exit
+ * search <String>
+ * sort
+ * </pre>
+ *
  * @author Rodson Chue Le Sheng [A0110787A]
  */
 public class TextBuddy {
@@ -84,53 +92,66 @@ public class TextBuddy {
 
             displayWelcomeMessage(fl);
 
-            boolean isNotExitCommand = true;
+            boolean isExitCommand = true;
             do {
                 String userInput = br.readLine();
-                Command userCommand = parseCommand(userInput);
-                switch (userCommand) {
-                    case ADD :
-                        executeAdd(userInput, fl);
-                        break;
-
-                    case CLEAR :
-                        executeClear(fl);
-                        break;
-
-                    case DEFAULT :
-                        executeDefault();
-                        break;
-
-                    case DELETE :
-                        executeDelete(userInput, fl);
-                        break;
-
-                    case DISPLAY :
-                        executeDisplay(fl);
-                        break;
-
-                    case EXIT :
-                        executeExit();
-                        isNotExitCommand = false;
-                        break;
-
-                    case SEARCH :
-                        executeSearch(fl, userInput);
-                        break;
-
-                    case SORT :
-                        executeSort(fl);
-                        break;
-
-                    default :
-                        displayUnknownCommandMessage();
-                        break;
-                }
-            } while (isNotExitCommand);
+                isExitCommand = executeGenericCommand(userInput, fl);
+            } while (!isExitCommand);
         } catch (Exception e) {
             errorFileIOException();
         } finally {
             closeReader(br);
+        }
+    }
+
+    /**
+     * Function is executed when userInput is captured. It determines what
+     * command it is and passes it to the relevant handlers. Returns a boolean
+     * value signifying whether to stop driver loop or to continue.
+     *
+     * @param userInput
+     * @param fl
+     *            File to execute functions on
+     * @return isExitCommand true when command is EXIT, false otherwise
+     */
+    public static boolean executeGenericCommand(String userInput, File fl) {
+        Command userCommand = parseCommand(userInput);
+        switch (userCommand) {
+            case ADD :
+                executeAdd(userInput, fl);
+                return false;
+
+            case CLEAR :
+                executeClear(fl);
+                return false;
+
+            case DEFAULT :
+                executeDefault();
+                return false;
+
+            case DELETE :
+                executeDelete(userInput, fl);
+                return false;
+
+            case DISPLAY :
+                executeDisplay(fl);
+                return false;
+
+            case EXIT :
+                executeExit();
+                return true;
+
+            case SEARCH :
+                executeSearch(fl, userInput);
+                return false;
+
+            case SORT :
+                executeSort(fl);
+                return false;
+
+            default :
+                displayUnknownCommandMessage();
+                return false;
         }
     }
 
